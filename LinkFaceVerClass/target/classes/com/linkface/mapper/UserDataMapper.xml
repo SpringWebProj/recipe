@@ -6,14 +6,16 @@
 	<select id="select" parameterType="com.linkface.entity.UserData" resultType="com.linkface.entity.UserData">
 		select * from userdata where user_key=#{userKey}
 	</select>
+	
 	<delete id="delete" parameterType="com.linkface.entity.UserData">
 		delete from userdata where user_key=#{userKey} and jjim=#{jjim}
 	</delete>
+	
 	<insert id="insert" parameterType="com.linkface.entity.UserData">
 		insert into userdata values(#{userKey},#{jjim},null)
 	</insert>
-	<insert id="insertfooditem" parameterType="com.linkface.entity.UserData">
-		insert into userdata values(#{userKey},null,#{foodingredients})
-	</insert>
 
+	<select id="selectOne" parameterType="com.linkface.entity.UserData" resultType="com.linkface.entity.UserData">
+		select * from userdata where user_key=#{userKey} and jjim=#{jjim}
+	</select>
 </mapper>

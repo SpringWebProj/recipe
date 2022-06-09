@@ -15,9 +15,9 @@ public class AccountLoginSuccessHandler implements AuthenticationSuccessHandler{
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
-		System.out.println(authentication);
 		
-		response.sendRedirect("/homepage");
+		
+		response.sendRedirect("/main");
 		
 	}
 

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ include file="includes/header.jsp" %>
+<%@ include file="/resources/includes/header.jsp" %>
 	<section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
             	<h1>찜목록과 비슷한 메뉴</h1>
@@ -51,4 +51,4 @@
                 </div>
             </div>
         </section>
-<%@ include file="includes/footer.jsp" %>
+<%@ include file="/resources/includes/footer.jsp" %>

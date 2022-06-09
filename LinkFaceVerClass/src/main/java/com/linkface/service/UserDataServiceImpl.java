@@ -27,13 +27,13 @@ public class UserDataServiceImpl implements UserDataService{
 	}
 
 	@Override
-	public void insertJJim(UserData userdata) {
-		mapper.insert(userdata);
+	public boolean insertJJim(UserData userdata) {
+		return mapper.insert(userdata) == 1;
 	}
 
 	@Override
-	public void regfoodingredients(UserData userdata) {
-		mapper.insertfooditem(userdata);		
+	public UserData getOne(UserData userdata) {
+		return mapper.selectOne(userdata);
 	}
 	
 	

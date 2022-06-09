@@ -1,5 +1,6 @@
 package com.linkface.util;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,7 @@ public class EmailHandler {
 	     message.setText(text);
 	     emailSender.send(message);
 	}
+	
 	// 1. 타입 2. 유저키 3. 이메일   4. 토큰 ( 이메일 인증 및 패스워드 찾기 링크 전송)
 	public static void authLinkSendEmail(String type,Long userKey,String email,String token) {
 		// 인증할 서버 URL
@@ -83,8 +85,8 @@ public class EmailHandler {
 									 .replace("&", "{{and}}")
 									 .replace("+", "{{plus}}");
 		
-		try {	urlText = URLEncoder.encode(urlText, "UTF-8");	}
-		catch(Exception e){ e.printStackTrace(); }
+		try { urlText = URLEncoder.encode(urlText, "UTF-8"); } 
+		catch (UnsupportedEncodingException e) { e.printStackTrace(); }
 		
 		return urlText;
 	}

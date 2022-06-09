@@ -13,7 +13,8 @@ import org.springframework.web.servlet.view.JstlView;
 public class ServletConfig implements WebMvcConfigurer{
 
 	@Override
-	public void configureViewResolvers(ViewResolverRegistry registry){	
+	public void configureViewResolvers(ViewResolverRegistry registry){
+		
 		InternalResourceViewResolver bean =
 				new InternalResourceViewResolver();
 		bean.setViewClass(JstlView.class);
@@ -28,4 +29,6 @@ public class ServletConfig implements WebMvcConfigurer{
 		.addResourceLocations("/resources/");
 		
 	}
+
+		
 }

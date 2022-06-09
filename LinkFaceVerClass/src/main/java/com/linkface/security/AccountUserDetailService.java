@@ -13,7 +13,7 @@ import com.linkface.mapper.UserStatusMapper;
 
 import lombok.Setter;
 
-// 사용자 인증
+// 사용자 인증 객체 생성
 @Component
 public class AccountUserDetailService implements UserDetailsService {
 
@@ -31,7 +31,6 @@ public class AccountUserDetailService implements UserDetailsService {
 		
 		UserStatus userStatus = 
 				UserStatusMapper.select(userInfo.getUserKey());				
-		
 		return new AccessAccount(userInfo,userStatus);
 	}
 	

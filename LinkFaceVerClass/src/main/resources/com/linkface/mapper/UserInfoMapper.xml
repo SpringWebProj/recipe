@@ -47,6 +47,12 @@
 		WHERE
 			user_email = #{userEmail}
 	</select>
+	<select id="readAllUserId" resultType="String">
+		SELECT 
+			user_id 
+		FROM
+			userinfo
+	</select>
 	<update id="updateEmail">
 		UPDATE
 			userinfo
@@ -79,8 +85,11 @@
 		WHERE
 			user_key = #{userKey}
 	</update>
+	<delete id="delete">
+		DELETE FROM 
+			userinfo
+		WHERE 
+			user_key = #{userKey};
+	</delete>
 	
-	
-	
-
 </mapper>

@@ -10,14 +10,18 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
+@EnableScheduling
 @ComponentScan(basePackages = "com.linkface.entity")
 @ComponentScan(basePackages = "com.linkface.service")
 @ComponentScan(basePackages = "com.linkface.security")
+@ComponentScan(basePackages = "com.linkface.util")
+@ComponentScan(basePackages = "com.linkface.scheduler")
 @MapperScan(basePackages = "com.linkface.mapper")
 public class RootConfig {
 
@@ -47,9 +51,7 @@ public class RootConfig {
 				applicationContext.getResource
 				("classpath:/mybatis-config.xml"));
 		return (SqlSessionFactory) sqlSessionFactoryBean.getObject();
-		
-		
-	}
 	
+	}
 	
 }

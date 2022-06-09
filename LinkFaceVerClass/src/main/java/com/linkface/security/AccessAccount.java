@@ -15,7 +15,6 @@ import lombok.Getter;
 @Getter
 public class AccessAccount implements UserDetails {
 
-
 	private static final long serialVersionUID = 1L;
 	private UserInfo userInfo;
 	private UserStatus userStatus;
@@ -24,7 +23,7 @@ public class AccessAccount implements UserDetails {
 		
 		this.userInfo = userInfo;
 		this.userStatus = userStatus;
-		 
+		
 	}
 	// 계정 아이디
 	@Override
@@ -52,7 +51,7 @@ public class AccessAccount implements UserDetails {
 	// 계정 잠금 여부
 	@Override
 	public boolean isAccountNonLocked() {
-		return this.userStatus.isNonLocked();
+		return true;
 	}
 
 	// 계정 패스워드 만료 여부
