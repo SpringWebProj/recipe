@@ -93,6 +93,7 @@
             <div class="join_btn3">
                 <a href="#">아이디/비밀번호 찾기</a>
             </div>
+            <button class="btn_signUp" onClick="location.href='/signup'">회원가입</button>
     </div>
 </div>
 

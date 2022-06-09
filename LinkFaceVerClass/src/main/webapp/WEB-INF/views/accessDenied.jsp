@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/resources/includes/tags.jsp" %>    
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<jsp:include page="/resources/includes/jqueryandcsrf.jsp"/>
+<title>Access error</title>
 </head>
 <body>
 	권한 없음

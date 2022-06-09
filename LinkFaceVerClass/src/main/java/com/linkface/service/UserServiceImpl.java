@@ -1,6 +1,7 @@
 package com.linkface.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,10 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.linkface.dto.UserDTO;
 import com.linkface.entity.UserInfo;
 import com.linkface.entity.UserStatus;
+import com.linkface.mapper.FoodNameMapper;
+import com.linkface.mapper.SanctionsMapper;
 import com.linkface.mapper.UserInfoMapper;
 import com.linkface.mapper.UserStatusMapper;
 import com.linkface.security.AccessAccount;
 import com.linkface.util.EmailHandler;
+import com.linkface.util.SearchTrie;
 
 import lombok.Setter;
 
@@ -30,6 +34,10 @@ public class UserServiceImpl implements UserService{
 	private UserStatusMapper userStatusMapper;
 	@Setter(onMethod_=@Autowired)
 	private PasswordEncoder pwend;
+	@Setter(onMethod_=@Autowired)
+	private FoodNameMapper foodNameMapper;
+	@Setter(onMethod_=@Autowired)
+	private SanctionsMapper sanctionsMapper;
 	
 	// 중복 검사
 	@Override 
@@ -86,6 +94,9 @@ public class UserServiceImpl implements UserService{
 		EmailHandler.
 			authLinkSendEmail("email",info.getUserKey(),info.getUserEmail(),status.getAuthToken());
 		
+		// 관리자가 찾기 위해 아이디를 등록
+		SearchTrie.insert(info.getUserId());
+		
 		// 정상 수행
 		return true;
 	}
@@ -104,7 +115,7 @@ public class UserServiceImpl implements UserService{
 		{	return false; }
 		else if(now.getTime() - status.getTokenCreateDate().getTime() > (300 * 1000))
 		{	return false; }
-		
+	
 		return true;
 	}
 
@@ -146,10 +157,10 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public String findUser(UserDTO dto, String type) {
 		
-		// 이메일로 계정을 찾음
+		// 유니크값인 이메일로 계정을 찾음
 		UserInfo info = userInfoMapper.readEmail(dto.getEmail());
 		// 해당 유저가 없을 경우
-		if(info == null)  { return "해당하는 유저를 찾을 수 없습니다"; }
+		if(info == null) { return "해당하는 유저를 찾을 수 없습니다"; }
 		// 아이디 찾기이며 입력한 정보가 동일할 경우
 		System.out.println(info.getUserId());
 		if(type.equals("id") && dto.getName().equals(info.getUserName())) {
@@ -200,6 +211,94 @@ public class UserServiceImpl implements UserService{
 		userInfoMapper.changeUpdateDate(key);
 		// 재접근 못하도록 토큰 업데이트
 		userStatusMapper.updateToken(key);
+	}
+
+	// 모든 유저 아이디 꺼내옴
+	@Override
+	public List<String> getAllUser() {
+		return userInfoMapper.readAllUserId();
+	}
+
+	// 관리자가 유저 조회에 필요한 모든 데이터 꺼내서 반환
+	@Override
+	public UserDTO adminLookupUserinfo(String id) {
+		UserInfo info = userInfoMapper.readId(id);
+		if(info == null) {
+			return null;
+		}
+		UserStatus status = userStatusMapper.select(info.getUserKey());
+		foodNameMapper.readUserRecipe(info.getUserKey());
+		
+		// 아이디 이름 유저권한 가입날짜 이메일인증, 계정만료(인증 실패 및 장기 미접속에 사용), 계정 정지, 작성글 
+		return UserDTO.builder()
+						.id(info.getUserId())
+						.name(info.getUserName())
+						.role(status.getRole())
+						.createDate(info.getCreateDate())
+						.emailAuth(status.isEmailAuth())
+						.idNonExpired(status.isIdNonExpired())
+						.enabled(status.isEnabled())
+						.foodnames(foodNameMapper.readUserRecipe(info.getUserKey()))
+						.build();
+	}
+
+	@Override
+	public boolean checkUserRole(Long key1, Long key2) {
+		
+		int requestRole = getUserRoleGrade(userStatusMapper.select(key1).getRole());
+		int targetRole = getUserRoleGrade(userStatusMapper.select(key2).getRole());
+		
+		return requestRole > targetRole ? true : false; 
+		
+	}
+
+	@Override
+	public int getUserRoleGrade(String role) {
+		
+		if(role.equals("ROLE_ADMIN")) {
+			return 5;
+		}
+		else if(role.equals("ROLE_MANAGER")) {
+			return 4;
+		}
+		else if(role.equals("ROLE_MAMBER")) {
+			return 3;
+		}
+		else if(role.equals("ROLE_UNKNOUN")) {
+			return 2;
+		}
+		return 1;
+	}
+
+	@Override
+	public UserDTO getUser(String id) {
+		// TODO Auto-generated method stub
+		
+		UserInfo info = userInfoMapper.readId(id);
+		if(info == null) {
+			return null;
+		}
+		UserStatus stauts = userStatusMapper.select(info.getUserKey());
+		
+		return UserDTO.builder()
+				.key(info.getUserKey())
+				.id(info.getUserId())
+				.role(stauts.getRole())
+				.build();
+	}
+
+	@Override
+	public void sanctionUser(Long key, int day, boolean enabled) {
+		
+		userStatusMapper.updateSanctionsDate(key, day);
+		userStatusMapper.updateEnabled(key, enabled);
+		
+	}
+
+	@Override
+	public void changeUserRole(Long key, String role) {
+		
+		userStatusMapper.updateRole(role, key);
 	}
 
 }

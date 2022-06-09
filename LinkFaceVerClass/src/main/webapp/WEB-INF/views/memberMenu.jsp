@@ -1,17 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ include file="/resources/includes/tags.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<jsp:include page="/resources/includes/jqueryandcsrf.jsp"/>
 </head>
 <body>
 	메뉴
 	<sec:authorize access="isAnonymous()">
 		 <button class="login" onClick="location.href='/login'">로그인</button>
-		 <button class="signUp" onClick="location.href='/singup'">회원가입</button>
 	</sec:authorize>
 	
 	<sec:authorize access="isAuthenticated()">
@@ -21,7 +19,9 @@
 	</form>
 		<button class="member" onClick="location.href='/member'">회원페이지</button>
 	</sec:authorize>
-	
+	<sec:authorize access="hasAnyRole('ROLE_MEMBER','ROLE_MANAGER','ROLE_ADMIN')">
+		<button class="admin" onClick="location.href='/write'">레시피 등록</button>
+	</sec:authorize>
 	<sec:authorize access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')">
 		<button class="admin" onClick="location.href='/admin'">관리자페이지</button>
 	</sec:authorize>

@@ -35,10 +35,8 @@ public class Aes256 {
     	}
     	catch (Exception e) {
     		e.printStackTrace();
-    		return "";
     	}
-    	
-    	
+    	return "";
     }
 
     // 위와 동일
@@ -60,8 +58,8 @@ public class Aes256 {
     	}
     	catch(Exception e) {
     		e.printStackTrace();
-    		return "";
     	}
+    	return "";
     		  
     }
     

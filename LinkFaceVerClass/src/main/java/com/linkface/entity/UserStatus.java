@@ -19,8 +19,6 @@ public class UserStatus {
 	
 	private boolean enabled;
 	
-	private boolean nonLocked;
-	
 	private boolean idNonExpired;
 	
 	private boolean passwordNonExpired;
@@ -31,4 +29,9 @@ public class UserStatus {
 	
 	private Date tokenCreateDate; 
 	
+	private Date sanctionsDate;
+	
+	private Date lastLoginDate;
+	
+	private int loginFailCount;
 }

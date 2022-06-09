@@ -51,5 +51,74 @@
 		WHERE
 			user_key = #{userKey}
 	</update>
+	<update id="updateLoginFailCount">
+		UPDATE
+			userstatus
+		SET
+			login_fail_count = #{loginFailCount}
+		WHERE
+			user_key = #{userKey}
+	</update>
+	<update id="updateIdNonExpired">
+		UPDATE
+			userstatus
+		SET
+			id_non_expired = #{idNonExpired}
+		WHERE
+			user_key = #{userKey}
+	</update>
+	
+	<update id="updateEnabled">
+		UPDATE
+			userstatus
+		SET
+			enabled = #{enabled}
+		WHERE
+			user_key = #{userKey}
+	</update>
+	
+	<update id="updateSanctionsDate">
+		UPDATE
+			userstatus
+		SET
+		<choose>
+			 <when test="day == 0">
+		 	  	 sanctions_date = DATE_ADD(null, INTERVAL #{day} day)
+		 	 </when>
+			 <otherwise>
+				 sanctions_date = DATE_ADD(now(), INTERVAL #{day} day)
+			 </otherwise>    
+		 </choose>
+		WHERE
+			user_key = #{userKey}
+	</update>
 
+	<select id="readAllUser" resultType="com.linkface.entity.UserStatus">
+		SELECT 
+			*
+		FROM 
+			userstatus
+	</select>
+	<delete id="delete">
+		DELETE FROM 
+			userstatus
+		WHERE 
+			user_key = #{userKey};
+	</delete>
+	<update id="updatePasswordNonExpired">
+		UPDATE
+			userstatus
+		SET
+			password_non_expired = #{passwordNonExpired}
+		WHERE
+			user_key = #{userKey}
+	</update>
+	<update id="updateLastLoginDate">
+		UPDATE
+			userstatus
+		SET
+			last_login_date = now()
+		WHERE
+			user_key = #{userKey}
+	</update>
 </mapper>

@@ -5,22 +5,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+
 public class SearchTrie {
 
 	// 필요한 것 추가
 	private static Node UserNameRootNode = new Node();
-	
 
+	
 	public static void listInsert(List<String> dataList) {		
 		dataList.forEach( data -> insert(data) );
 	}
 	
-	private static void insert(String str) {
+	
+	public static void insert(String str) {
 		// 사용 노드 지정
 		Node node = UserNameRootNode;
 		// 전달받은 문자열로 반복문 사용
+		
 		for (int i = 0; i < str.length(); i++) {
-			// i 번쨰 문자
+			// i 번쨰 문자 
 			char ch = str.charAt(i);
 			// 키가 있다면 키 반환 없다면 새로 키 지정 후 하위 노드로 이동
 			node.childNode.putIfAbsent(ch, new Node());
@@ -34,7 +38,7 @@ public class SearchTrie {
 	}
 	
 	private static Set<String> getData(Node node,String str) {
-			
+		
 		Set<String> data = new HashSet<>();
 		// 이 노드가 마지막 노드일 경우 문자열을 추가
 		if(node.isLastNode) {
@@ -69,7 +73,8 @@ public class SearchTrie {
             	return result; 
             }
             // 마지막 문자라면 데이터를 재귀함수로 긁어옴
-            if(i == (str.length() - 1)){	
+            if(i == (str.length() - 1)) {
+            	
                 result = List.copyOf(getData(node, str));
                 return result;
             }

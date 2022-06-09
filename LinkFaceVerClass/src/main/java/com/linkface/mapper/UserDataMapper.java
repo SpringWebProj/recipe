@@ -7,6 +7,6 @@ import com.linkface.entity.UserData;
 public interface UserDataMapper {
 	public List<UserData> select(Long userKey);
 	public void delete(UserData userdata);
-	public void insert(UserData userdata);
-	public void insertfooditem(UserData userdata);
+	public int insert(UserData userdata);
+	public UserData selectOne(UserData userdata);
 }

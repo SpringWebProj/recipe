@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
+<%@ include file="/resources/includes/tags.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<jsp:include page="/resources/includes/jqueryandcsrf.jsp"/>
 <title>Insert title here</title>
 </head>
 <body>
@@ -13,5 +13,6 @@
 	<p>ID : <sec:authentication property="principal.userInfo.userId"/></p>
 	<p>EMAIL : <sec:authentication property="principal.userInfo.userEmail"/></p>
 	<p>NAME : <sec:authentication property="principal.userInfo.userName"/></p>
+	<p>ROLE : <sec:authentication property="principal.userStatus.role"/></p>
 </body>
 </html>
